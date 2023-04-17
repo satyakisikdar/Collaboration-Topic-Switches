@@ -19,4 +19,5 @@ dependencies:
   - jupyterlab_widgets
   - ipywidgets
   - jupyterlab_execute_time
-
+  - pip:
+      - jupyter_server_mathjax
