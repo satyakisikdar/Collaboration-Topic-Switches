@@ -1,0 +1,21 @@
+name: topic-switch
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - mamba
+  - jupyterlab
+  - pandas[version='>1']
+  - networkx[version='<3']
+  - ca-certificates
+  - certifi
+  - openssl
+  - seaborn
+  - pyarrow
+  - fastparquet
+  - ujson
+  - orjson
+  - jupyterlab_widgets
+  - ipywidgets
+  - jupyterlab_execute_time
