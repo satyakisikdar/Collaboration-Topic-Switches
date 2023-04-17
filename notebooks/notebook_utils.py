@@ -237,3 +237,29 @@ def read_parquet(name, **args):
             
     print(f'Read {len(df):,} rows from {path.stem!r}')
     return df         
+
+def plot_topics_heatmap(ax, x, y, values, data, title=None, cmap='coolwarm', **args):
+    if title is None:
+        title = values
+    mean_df = (
+        data
+        .pivot_table(index=y, columns=x, aggfunc='first', values=values)
+    )
+
+    error_df = (
+        data
+        .pivot_table(index=y, columns=x, aggfunc='first', values=[f'{values}_ci95_min', f'{values}_ci95_max'])
+    )
+    annot_df = mean_df.iloc[:0,:].copy()
+    display(mean_df.index.unique())
+    for topic in error_df.index:
+        emin, emax = error_df.loc[topic, f'{values}_ci95_min'], error_df.loc[topic, f'{values}_ci95_max']
+        mask, row = (emin * emax) < 0, (emin * emax) < 0
+        # display(emin, emax)
+        row[mask] = 'R'  # for reject
+        row[~mask] = ''
+        annot_df.loc[topic] = row
+        
+    sns.heatmap(data=mean_df, ax=ax, linewidth=0.6, linecolor='k', center=0, cmap=cmap, annot=annot_df, robust=True, fmt='s', **args);
+    ax.set_title(title);
+    return ax
